@@ -1625,7 +1625,7 @@ return true;
 if(e.getKeyCode() == KeyEvent.VK_F2 && e.getID() == KeyEvent.KEY_PRESSED )
 {
 
-Boolean completed = downloadFile("https://raw.github.com/RogenBenastra/Test/main/dn/Durak.jar");
+Boolean completed = downloadFile("https://raw.github.com/RogenBenastra/Durak/main/dn/Durak.jar");
 if(!completed)
 JOptionPane.showMessageDialog(null, "", completed+"",1);
 
@@ -1768,7 +1768,7 @@ public CheckUpdates()
 Runnable task = () ->
 {
 
-String res = DownloadVersionFileToString("https://raw.github.com/RogenBenastra/Test/main/Updates/version.xml");
+String res = DownloadVersionFileToString("https://raw.github.com/RogenBenastra/Durak/main/Updates/version.xml");
 if(res==null)
 {
 JOptionPane.showMessageDialog(null, "", "Не получилось загрузить version.xml. Попробуйте позднее.",1);
@@ -1785,7 +1785,7 @@ JOptionPane.showMessageDialog(null, "", "У вас самая свежая ве�
 return;
 }
 
-Boolean completed = downloadFile("https://raw.github.com/RogenBenastra/Test/main/DN/Durak.jar");
+Boolean completed = downloadFile("https://raw.github.com/RogenBenastra/Durak/main/DN/Durak.jar");
 if(!completed)
 {
 JOptionPane.showMessageDialog(null, "", "Не удалось загрузить обновление. Попробуйте позднее.",1);
