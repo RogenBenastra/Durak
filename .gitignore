@@ -1,0 +1,33 @@
+# some needless files
+1compile.bat
+2start.bat
+3make Durak jar.bat
+4make Updater.bat
+settings.ini
+Audio.exe
+Updates\XMLFiller.jar
+Updates\XMLFiller.java
+
+# Compiled class file
+*.class
+
+# Log file
+*.log
+
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+¹*.jar
+*.war
+*.nar
+*.ear
+¹*.zip
+*.tar.gz
+*.rar
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
