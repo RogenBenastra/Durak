@@ -1763,6 +1763,15 @@ public CheckUpdates()
 Runnable task = () ->
 {
 
+try{
+File file = new File("Updater.jar.tmp");
+if(!file.exists())
+{
+JOptionPane.showMessageDialog(null, "", "Отсутствует файл Updater.jar.",1);
+return;
+}
+}catch (Exception e0){}
+
 String res = DownloadVersionFileToString("https://raw.github.com/RogenBenastra/Durak/main/Updates/version.xml");
 if(res==null)
 {
@@ -1780,7 +1789,7 @@ JOptionPane.showMessageDialog(null, "", "У вас самая свежая ве�
 return;
 }
 
-Boolean completed = downloadFile("https://raw.github.com/RogenBenastra/Durak/main/DN/Durak.jar");
+Boolean completed = downloadFile("https://raw.github.com/RogenBenastra/Durak/main/Bin/Durak.jar");
 if(!completed)
 {
 JOptionPane.showMessageDialog(null, "", "Не удалось загрузить обновление. Попробуйте позднее.",1);
