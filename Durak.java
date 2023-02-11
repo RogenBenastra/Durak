@@ -1788,11 +1788,33 @@ return;
 }
 
 //String hash_downloaded_file = MakeHash.getHash("Durak.jar.tmp");
-JOptionPane.showMessageDialog(null, "", "Обновление выполнено. Приложение будет перезагружено.",1);
+
+JOptionPane.showMessageDialog(null, "", "Приложение загружено. Приступаем к обновлению.",1);
 try{
 Desktop desktop = Desktop.getDesktop();
 desktop.open(new File("Updater.jar"));
-}catch(Exception ex){}
+}catch(Exception ex)
+{
+JOptionPane.showMessageDialog(null, "", "Отсутствует Updater.jar. Обновление невозможно.",1);
+//удаляем загруженный файл
+    File file_delete = new File("Durak.jar.tmp");
+        int retryCounter = 0;
+        final int maxRetries = 10;
+        boolean fileDeleted = false;
+                while (!fileDeleted && retryCounter < maxRetries) {
+            if (file_delete.delete()) {
+                fileDeleted = true;
+            } else {
+                retryCounter++;
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e2) {
+//some message
+                }
+            }
+}
+
+}//catch
 
 };//runnable
  Thread t1=new Thread (task);
