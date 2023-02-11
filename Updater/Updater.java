@@ -9,13 +9,13 @@ import java.net.Socket;
 public class Updater {
   public static void main(String[] args) {
 
-//проверяем условия начала работы программы
+//РїСЂРѕРІРµСЂСЏРµРј СѓСЃР»РѕРІРёСЏ РЅР°С‡Р°Р»Р° СЂР°Р±РѕС‚С‹ РїСЂРѕРіСЂР°РјРјС‹
 File file1 = new File("Durak.jar");
 File file2 = new File("Durak.jar.tmp");
 if(!file1.exists()|!file2.exists())
 return;
 
-//закрываем активное приложение
+//Р·Р°РєСЂС‹РІР°РµРј Р°РєС‚РёРІРЅРѕРµ РїСЂРёР»РѕР¶РµРЅРёРµ
             try {
                Socket socket = new Socket("localhost", 9090);
                PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
@@ -37,7 +37,7 @@ return;
                //ex.printStackTrace();
             }
 
-//сперва удаляем старую версию
+//СЃРїРµСЂРІР° СѓРґР°Р»СЏРµРј СЃС‚Р°СЂСѓСЋ РІРµСЂСЃРёСЋ
     File file_delete = new File("Durak.jar");
         int retryCounter = 0;
         final int maxRetries = 10;
@@ -55,7 +55,7 @@ return;
             }
 }
 
-//избавляемся от левого расширения
+//РёР·Р±Р°РІР»СЏРµРјСЃСЏ РѕС‚ Р»РµРІРѕРіРѕ СЂР°СЃС€РёСЂРµРЅРёСЏ
             File oldFile = new File("Durak.jar.tmp");
         File newFile = new File("Durak.jar");
 if (oldFile.exists()) {

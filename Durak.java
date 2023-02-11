@@ -1764,7 +1764,7 @@ Runnable task = () ->
 {
 
 try{
-File file = new File("Updater.jar.tmp");
+File file = new File("Updater.jar");
 if(!file.exists())
 {
 JOptionPane.showMessageDialog(null, "", "Отсутствует файл Updater.jar.",1);

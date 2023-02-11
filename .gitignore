@@ -2,7 +2,7 @@
 1compile.bat
 2start.bat
 3make Durak jar.bat
-4make Updater.bat
+Updater\1Make Updater jar.bat
 5Make 7z.bat
 settings.ini
 Audio.exe
