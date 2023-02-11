@@ -1625,11 +1625,6 @@ return true;
 if(e.getKeyCode() == KeyEvent.VK_F2 && e.getID() == KeyEvent.KEY_PRESSED )
 {
 
-Boolean completed = downloadFile("https://raw.github.com/RogenBenastra/Durak/main/dn/Durak.jar");
-if(!completed)
-JOptionPane.showMessageDialog(null, "", completed+"",1);
-
-//JOptionPane.showMessageDialog(null, "", ver_local+"",1);
 return true;
 }//f2
 
