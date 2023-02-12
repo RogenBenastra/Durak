@@ -3,10 +3,10 @@
 2start.bat
 3make Durak jar.bat
 4make 7z.bat
-/Updater/1compile Updater.bat
-/Updater/2Make Updater jar.bat
-/Updates/XMLFiller.jar
-/Updates/XMLFiller.java
+/updater/1compile Updater.bat
+/updater/2Make Updater jar.bat
+/updates/XMLFiller.jar
+/updates/XMLFiller.java
 settings.ini
 Audio.exe
 

@@ -1222,7 +1222,7 @@ public static String getVersionFromManifest() {
 public String getInfoFromXML(String nodeName)
 {
 try{
-File file = new File("Updates\\version.xml");
+File file = new File("updates\\version.xml");
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db = dbf.newDocumentBuilder();
         Document doc = db.parse(file);
@@ -1772,7 +1772,7 @@ return;
 }
 }catch (Exception e0){}
 
-String res = DownloadVersionFileToString("https://raw.github.com/RogenBenastra/Durak/main/Updates/version.xml");
+String res = DownloadVersionFileToString("https://raw.github.com/RogenBenastra/Durak/main/updates/version.xml");
 if(res==null)
 {
 JOptionPane.showMessageDialog(null, "", "Не получилось загрузить version.xml. Попробуйте позднее.",1);
@@ -1789,7 +1789,7 @@ JOptionPane.showMessageDialog(null, "", "У вас самая свежая ве�
 return;
 }
 
-Boolean completed = downloadFile("https://raw.github.com/RogenBenastra/Durak/main/Bin/Durak.jar");
+Boolean completed = downloadFile("https://raw.github.com/RogenBenastra/Durak/main/bin/Durak.jar");
 if(!completed)
 {
 JOptionPane.showMessageDialog(null, "", "Не удалось загрузить обновление. Попробуйте позднее.",1);
