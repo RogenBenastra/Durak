@@ -5,7 +5,8 @@
 4Make 7z.bat
 settings.ini
 Audio.exe
-z:\Java\Durak\Updater\1Make Updater jar.bat
+z:\Java\Durak\Updater\1compile Updater.bat
+z:\Java\Durak\Updater\2Make Updater jar.bat
 z:\Java\Durak\Updates\XMLFiller.jar
 z:\Java\Durak\Updates\XMLFiller.java
 
