@@ -1,4 +1,0 @@
-Manifest-Version: 1.0
-Created-By: 17.0.5 (Oracle Corporation)
-Main-Class: Updater
-Implementation-Version: 1.0
