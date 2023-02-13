@@ -1660,33 +1660,6 @@ return true;
 if(e.getKeyCode() == KeyEvent.VK_F2 && e.getID() == KeyEvent.KEY_PRESSED )
 {
 
-Runnable task = () ->
-{
-
-File file = new File("_temp");
-Boolean b = false;
-int i=0;
-
-while(!b)
-{
-if(i==5) break;
-b = deleteFolder(file);
-try{
-Thread.sleep(1000);
-}catch(Exception ex){}
-i++;
-}
-
-if (b)
-JOptionPane.showMessageDialog(null, "", b+"",1);
-if (!b)
-JOptionPane.showMessageDialog(null, "", b+"",1);
-
-};
- Thread t1=new Thread (task);
-t1.start();
-
-
 return true;
 }//f2
 
@@ -1880,7 +1853,7 @@ Thread.sleep(1000);
 return;
 }//hash
 
-JOptionPane.showMessageDialog(null, "", "Хэши в порядке. Приступаем к обновлению.",1);
+JOptionPane.showMessageDialog(null, "", "Приступаем к обновлению.",1);
 try{
 Desktop desktop = Desktop.getDesktop();
 desktop.open(new File("Updater.jar"));
