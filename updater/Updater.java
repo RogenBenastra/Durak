@@ -12,25 +12,34 @@ import java.net.Socket;
 
 public class Updater {
 
-//delete temp folder and subfolders
-    public static boolean deleteDirectory(File dir) {
-    if (dir.isDirectory()) {
-      File[] children = dir.listFiles();
-      for (int i = 0; i < children.length; i++) {
-        boolean success = deleteDirectory(children[i]);
-        if (!success) {
-          return false;
+//deleting folder
+  public static boolean deleteFolder(File directory) {
+    if (directory.exists()) {
+      File[] files = directory.listFiles();
+      if (files != null) {
+        for (File file : files) {
+          if (file.isDirectory()) {
+            deleteFolder(file);
+          } else {
+            file.delete();
+          }
         }
       }
     }
-    // either file or an empty directory
-    return dir.delete();
+    if (directory.delete()) {
+      System.out.println("Directory and its subdirectories and files have been deleted.");
+      return true;
+    } else {
+      System.out.println("Failed to delete directory and its subdirectories and files.");
+      return false;
+    }
   }
+
 
   public static void main(String[] args) {
 
 //проверяем условия начала работы программы
-File file1 = new File("temp\\Durak.jar");
+File file1 = new File("_temp\\Durak.jar");
 File file2 = new File("Durak.jar");
 if(!file1.exists()|!file2.exists())
 return;
@@ -90,6 +99,9 @@ temp_folder.delete();
     } catch (Exception e) {
       System.out.println("Error while moving the file: " + e.getMessage());
     }
+
+//удаляем временную папку
+deleteFolder(new File("_temp"));
 
 // Launch file2.jar using Desktop
 File newFile = new File("Durak.jar");    
