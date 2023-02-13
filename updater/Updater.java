@@ -1,17 +1,37 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
+import java.io.*;
+import java.io.File.*;
+import java.nio.file.Files;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.StandardCopyOption;
+
 import java.net.Socket;
 
 public class Updater {
+
+//delete temp folder and subfolders
+    public static boolean deleteDirectory(File dir) {
+    if (dir.isDirectory()) {
+      File[] children = dir.listFiles();
+      for (int i = 0; i < children.length; i++) {
+        boolean success = deleteDirectory(children[i]);
+        if (!success) {
+          return false;
+        }
+      }
+    }
+    // either file or an empty directory
+    return dir.delete();
+  }
+
   public static void main(String[] args) {
 
 //проверяем условия начала работы программы
-File file1 = new File("Durak.jar");
-File file2 = new File("Durak.jar.tmp");
+File file1 = new File("temp\\Durak.jar");
+File file2 = new File("Durak.jar");
 if(!file1.exists()|!file2.exists())
 return;
 
@@ -29,7 +49,7 @@ return;
                      count++;
                      Thread.sleep(1000);
                   } catch (Exception ex) {
-                     //JOptionPane.showMessageDialog(null, "App1 is closed");
+//
                      break;
                   }
                }
@@ -38,12 +58,12 @@ return;
             }
 
 //сперва удаляем старую версию
-    File file_delete = new File("Durak.jar");
+    File oldFile = new File("Durak.jar");
         int retryCounter = 0;
         final int maxRetries = 10;
         boolean fileDeleted = false;
                 while (!fileDeleted && retryCounter < maxRetries) {
-            if (file_delete.delete()) {
+            if (oldFile.delete()) {
                 fileDeleted = true;
             } else {
                 retryCounter++;
@@ -55,20 +75,27 @@ return;
             }
 }
 
-//избавляемся от левого расширения
-            File oldFile = new File("Durak.jar.tmp");
-        File newFile = new File("Durak.jar");
-if (oldFile.exists()) {
-       boolean success = oldFile.renameTo(newFile);
-        if (!success) {
-//            System.out.println("File renaming failed.");
-        }
-}
+//копируем durak.jar из временной папки в постоянную
+    try {
+      // source file
+      File source = new File("_temp\\Durak.jar");
+      // destination file
+      File destination = new File("Durak.jar");
+      // move the file from source to destination
+      Files.move(source.toPath(), destination.toPath(), StandardCopyOption.REPLACE_EXISTING);
+      // delete the source folder "_temp"
+File temp_folder = new File("_temp");      
+temp_folder.delete();
+      //System.out.println("File moved and source folder deleted successfully!");
+    } catch (Exception e) {
+      System.out.println("Error while moving the file: " + e.getMessage());
+    }
 
 // Launch file2.jar using Desktop
-    if (newFile.exists()) {
+File newFile = new File("Durak.jar");    
+if (newFile.exists()) {
       try {
-        Desktop.getDesktop().open(newFile);
+Desktop.getDesktop().open(newFile);
         System.exit(0);
       } catch (IOException e) {
         //System.err.println("Error launching Durak.jar");

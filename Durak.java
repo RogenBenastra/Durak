@@ -1161,6 +1161,29 @@ InputMap inputMap = rootPane.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COM
 inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ALT, 0, true), MENU_ACTION_KEY);
 }//fn
 
+//deleting folder
+  public static boolean deleteFolder(File directory) {
+    if (directory.exists()) {
+      File[] files = directory.listFiles();
+      if (files != null) {
+        for (File file : files) {
+          if (file.isDirectory()) {
+            deleteFolder(file);
+          } else {
+            file.delete();
+          }
+        }
+      }
+    }
+    if (directory.delete()) {
+      System.out.println("Directory and its subdirectories and files have been deleted.");
+      return true;
+    } else {
+      System.out.println("Failed to delete directory and its subdirectories and files.");
+      return false;
+    }
+  }
+
 //getting version and hash from remote version.xml file
 public String getInfoFromXML(String incomingString, String nodeName) {
     try {
@@ -1257,8 +1280,22 @@ public static Boolean downloadFile(String url) {
 return false;
         }
         String[] split = link.getFile().split("/");
-        String fileName = split[split.length - 1] + ".tmp";
-        try (FileOutputStream outputStream = new FileOutputStream(fileName)) {
+        String fileName = split[split.length - 1];
+        //create temp folder for downloaded file storage
+        String folderName = "_temp";
+        File folder = new File(folderName);
+        boolean created = false;
+       if (!folder.exists()) {
+            created = folder.mkdir();
+        }
+       // Check if folder was created successfully
+        if (created) {
+            //JOptionPane.showMessageDialog(null,"","Папка создана!",1);    
+        } else {
+        JOptionPane.showMessageDialog(null,"","Папка не создана или уже существует!",1);    
+        }
+
+try (FileOutputStream outputStream = new FileOutputStream("_temp\\"+fileName)) {
             byte[] buffer = new byte[4096];
             int bytesRead = -1;
             while ((bytesRead = connection.getInputStream().read(buffer)) != -1) {
@@ -1266,10 +1303,8 @@ return false;
             }
         }
         connection.disconnect();
-//JOptionPane.showMessageDialog(null,"", "загрузка окончена",1);        
 return true;
     } catch (IOException e) {
-//JOptionPane.showMessageDialog(null,"", e.getMessage(),1);                
 return false;
     }
 }//fn
@@ -1625,6 +1660,33 @@ return true;
 if(e.getKeyCode() == KeyEvent.VK_F2 && e.getID() == KeyEvent.KEY_PRESSED )
 {
 
+Runnable task = () ->
+{
+
+File file = new File("_temp");
+Boolean b = false;
+int i=0;
+
+while(!b)
+{
+if(i==5) break;
+b = deleteFolder(file);
+try{
+Thread.sleep(1000);
+}catch(Exception ex){}
+i++;
+}
+
+if (b)
+JOptionPane.showMessageDialog(null, "", b+"",1);
+if (!b)
+JOptionPane.showMessageDialog(null, "", b+"",1);
+
+};
+ Thread t1=new Thread (task);
+t1.start();
+
+
 return true;
 }//f2
 
@@ -1775,17 +1837,17 @@ return;
 String res = DownloadVersionFileToString("https://raw.github.com/RogenBenastra/Durak/main/updates/version.xml");
 if(res==null)
 {
-JOptionPane.showMessageDialog(null, "", "Не получилось загрузить version.xml. Попробуйте позднее.",1);
+JOptionPane.showMessageDialog(null, "", "Не удалось загрузить version.xml. Попробуйте позднее.",1);
 return;
 }
 
 int app_version_remote = Integer.parseInt(getInfoFromXML(res, "version").replace(".",""));
 int app_version_local = Integer.parseInt(getVersionFromManifest().replace(".",""));
-//String hash_remote_txt = getInfoFromXML( res, "hash");
+String hash_remote_txt = getInfoFromXML( res, "hash");
 
-if(app_version_local==app_version_remote)
+if(app_version_local>=app_version_remote)
 {
-JOptionPane.showMessageDialog(null, "", "У вас самая свежая версия! Обновление не требуется.",1);
+JOptionPane.showMessageDialog(null, "", "У вас самая новая версия! Обновление не требуется.",1);
 return;
 }
 
@@ -1796,34 +1858,36 @@ JOptionPane.showMessageDialog(null, "", "Не удалось загрузить 
 return;
 }
 
-//String hash_downloaded_file = MakeHash.getHash("Durak.jar.tmp");
+String hash_downloaded_file = MakeHash.getHash("_temp\\Durak.jar");
 
-JOptionPane.showMessageDialog(null, "", "Приложение загружено. Приступаем к обновлению.",1);
+if(!hash_remote_txt.equals(hash_downloaded_file))
+{
+JOptionPane.showMessageDialog(null, "", "Хэши не совпадают. Обновление невозможно.",1);
+
+File file = new File("_temp");
+Boolean b = false;
+int i=0;
+
+while(!b)
+{
+if(i==5) break;
+b = deleteFolder(file);
+i++;
+try{
+Thread.sleep(1000);
+}catch(Exception ex){}
+}
+return;
+}//hash
+
+JOptionPane.showMessageDialog(null, "", "Хэши в порядке. Приступаем к обновлению.",1);
 try{
 Desktop desktop = Desktop.getDesktop();
 desktop.open(new File("Updater.jar"));
 }catch(Exception ex)
 {
-JOptionPane.showMessageDialog(null, "", "Отсутствует Updater.jar. Обновление невозможно.",1);
-//удаляем загруженный файл
-    File file_delete = new File("Durak.jar.tmp");
-        int retryCounter = 0;
-        final int maxRetries = 10;
-        boolean fileDeleted = false;
-                while (!fileDeleted && retryCounter < maxRetries) {
-            if (file_delete.delete()) {
-                fileDeleted = true;
-            } else {
-                retryCounter++;
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e2) {
-//some message
-                }
-            }
+//JOptionPane.showMessageDialog(null, "", "Отсутствует Updater.jar. Обновление невозможно.",1);
 }
-
-}//catch
 
 };//runnable
  Thread t1=new Thread (task);
