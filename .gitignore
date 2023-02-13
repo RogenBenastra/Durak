@@ -5,6 +5,7 @@
 4make 7z.bat
 /updater/1compile Updater.bat
 /updater/2Make Updater jar.bat
+/filler
 /updates/XMLFiller.jar
 /updates/XMLFiller.java
 settings.ini
