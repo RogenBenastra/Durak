@@ -26,7 +26,7 @@ public class Durak extends JFrame
 {
 
 //version app
-final String appVersion="1.0.2.11";
+final String appVersion= "1.0.213";
 
 //an object of AppSettings class
 AppSettings apps = new AppSettings();
@@ -1326,7 +1326,13 @@ t1.start();
         super("Карточная игра «ДУРАК»");
 setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-//проверка наличия файла настроек
+//exit app if soulds folder is out
+if (!new File("Sounds").exists()&&apps.getSoundMode()!=0)
+{
+System.exit(0);
+}
+
+//if settings.ini exists
 checkSettingsFile();
 
 //создаем меню
@@ -1659,7 +1665,6 @@ return true;
 
 if(e.getKeyCode() == KeyEvent.VK_F2 && e.getID() == KeyEvent.KEY_PRESSED )
 {
-
 
 return true;
 }//f2
