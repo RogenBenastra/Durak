@@ -1,4 +1,4 @@
 Manifest-Version: 1.0
 Created-By: 17.0.5 (Oracle Corporation)
 Main-Class: Durak
-Implementation-Version: 1.0.213
+Implementation-Version: 1.0.214

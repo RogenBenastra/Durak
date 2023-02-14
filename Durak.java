@@ -25,60 +25,60 @@ import java.net.*;
 public class Durak extends JFrame
 {
 
-//version app
+//номер версии приложения
 final String appVersion= "1.0.213";
 
-//an object of AppSettings class
+//объект класса настроек
 AppSettings apps = new AppSettings();
 
-//menu items
+//пункты меню
 JCheckBoxMenuItem orig, rsg, sounds_off, bySuit, byValue, bySuitAndValue, sorting_off,fullPack, checkUpdatesOnStart, rightNow;
 
-//root nodes on hands and desk
+//объекты игрока1 и стола
 DefaultMutableTreeNode hands1 = new DefaultMutableTreeNode("Карты на руках");
 DefaultMutableTreeNode desk = new DefaultMutableTreeNode("Карты на столе");
 
-//tree models
+//модели деревьев
 DefaultTreeModel model1 = new DefaultTreeModel(hands1);
 DefaultTreeModel model2 = new DefaultTreeModel(desk);
 
-//trees of hands and desk
+//деревья стол и на руках
 JTree tree1 = new JTree(model1);
 JTree tree2 = new JTree(model2);
 
-//a button
+//кнопка
 JButton button=new JButton("Начать Игру");
 
-//playing objects
+//игровые объекты
 Card oneGo, twoGo, trump;
 
-//when trump is taken
+//козырь взят
 boolean trumpIsTaken = false;
 
-//scores of both players
+//очки игроков
 int scores1, scores2;
 
-//working pack
+//рабочая колода
 ArrayList<Card> wPack = new ArrayList<Card>();
 
-//cards on computer's hands
+//карты на руках оппонента
 ArrayList<Card> hands2 = new ArrayList<Card>();
 
-//cards in drawn game
+//карты в игре
         ArrayList<Card> cardsInGame = new ArrayList<Card>();
         
-//whose turn, true - me, false - him
+//кому ходить, true мне, false оппоненту
         boolean turn;
 
-//methods
+//методы
 
-//raise the closing event
+//вызывает событие закрытие программы
 void raiseClosingEvent()
 {
 this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
 }
 
-//remove node under cursor
+//удаляет карту под курсором
 void removeCardUnderCursor()
 {
 DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree1.getSelectionPath().getLastPathComponent();
@@ -177,7 +177,7 @@ apps.setScores(scores1+"x"+scores2);
 }//fn
 
 //держим младшие козыри
-boolean youngTrumpsBlocker()
+boolean juniorTrumpsBlocker()
 {
 if(wPack.size()>18 && !apps.getFullPack())
 return false;
@@ -187,7 +187,7 @@ return true;
 }//fn
 
 //держим старшие козыри
-boolean highTrumpsBlocker(Card input)
+boolean seniorTrumpsBlocker(Card input)
 {
 int i= rnd();
 if (input.getRank() > 11 && input.getSuit().equals(trump.getSuit()) && wPack.size() != 0&&i==0)
@@ -197,7 +197,7 @@ return true;
 }//fn
 
 //держит карты старшего достоинства
-Boolean highRankBlocker(Card input)
+Boolean seniorRankBlocker(Card input)
 {
 int i= rnd();
 boolean b1=false, b2=false;
@@ -594,6 +594,7 @@ hands2.sort(Comparator.comparing(Card::getRank));
 //первый ход
 if(cardsInGame.size()==0)
 {
+
 for (int i1 = 0; i1 <= hands2.size() - 1; i1++)
 {
 //ходим некозырем
@@ -616,7 +617,7 @@ return;
 for (int i2=0;i2<=hands2.size()-1;i2++)
 {
 if (trump.getSuit().equals(hands2.get(i2).getSuit())
-/*&& youngTrumpsBlocker() && highTrumpsBlocker(hands2.get(i2))*/)
+/*&& juniorTrumpsBlocker() && seniorTrumpsBlocker(hands2.get(i2))*/)
 {
 addOps(hands2.get(i2));
 
@@ -658,7 +659,7 @@ return;
 for (int i4 = 0; i4 <= hands2.size() - 1; i4++)
 {
 if (can2Add(hands2.get(i4)) && hands2.get(i4).getSuit().equals(trump.getSuit())
-/*&& youngTrumpsBlocker() && highTrumpsBlocker(hands2.get(i4))*/)
+/*&& juniorTrumpsBlocker() && seniorTrumpsBlocker(hands2.get(i4))*/)
 {
 addOps(hands2.get(i4));
 
@@ -715,7 +716,7 @@ for (int i1 = 0; i1 <= hands2.size() - 1; i1++)
 if(oneGo.getSuit().equals(hands2.get(i1).getSuit())
  && oneGo.getRank() < hands2.get(i1).getRank()
  && oneGo.getSuit().equals(trump.getSuit()) == false
-/* && highRankBlocker(hands2.get(i1))*/)
+/* && seniorRankBlocker(hands2.get(i1))*/)
 {
 defOps(hands2.get(i1));
 
@@ -1161,7 +1162,7 @@ InputMap inputMap = rootPane.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COM
 inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ALT, 0, true), MENU_ACTION_KEY);
 }//fn
 
-//deleting folder
+//удаление папки
   public static boolean deleteFolder(File directory) {
     if (directory.exists()) {
       File[] files = directory.listFiles();
@@ -1176,15 +1177,15 @@ inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ALT, 0, true), MENU_ACTION_KEY);
       }
     }
     if (directory.delete()) {
-      System.out.println("Directory and its subdirectories and files have been deleted.");
+      //JOptionPane.showMessageDialog(null, "", "Папка и подпапки удалены", 1);    
       return true;
     } else {
-      System.out.println("Failed to delete directory and its subdirectories and files.");
+      //JOptionPane.showMessageDialog(null, "", "Ошибка удаления", 1);    
       return false;
     }
   }
 
-//getting version and hash from remote version.xml file
+//получение номера версии и хэша
 public String getInfoFromXML(String incomingString, String nodeName) {
     try {
         InputStream stream = new ByteArrayInputStream(incomingString.getBytes());
@@ -1209,7 +1210,7 @@ public String getInfoFromXML(String incomingString, String nodeName) {
     return null;
 }//fn
 
-//downloading into a String var
+//загрузка version.xml в String
 public static String DownloadVersionFileToString(String url) {
     try {
         URL obj = new URL(url);
@@ -1225,7 +1226,7 @@ public static String DownloadVersionFileToString(String url) {
         in.close();
         return response.toString();
     } catch (Exception e) {
-        e.printStackTrace();
+        JOptionPane.showMessageDialog(null, "", e.getMessage(), 1);    
         return null;
     }
 }//fn
@@ -1267,7 +1268,7 @@ File file = new File("updates\\version.xml");
 return null;
 }//fn
 
-//download file
+//загружаем файл
 public static Boolean downloadFile(String url) {
     try {
         URL link = new URL(url);
@@ -1281,14 +1282,14 @@ return false;
         }
         String[] split = link.getFile().split("/");
         String fileName = split[split.length - 1];
-        //create temp folder for downloaded file storage
+        //создаем каталог и помещаем туда файл
         String folderName = "_temp";
         File folder = new File(folderName);
         boolean created = false;
        if (!folder.exists()) {
             created = folder.mkdir();
         }
-       // Check if folder was created successfully
+       // Check if folder has been created successfully
         if (created) {
             //JOptionPane.showMessageDialog(null,"","Папка создана!",1);    
         } else {
@@ -1305,6 +1306,7 @@ try (FileOutputStream outputStream = new FileOutputStream("_temp\\"+fileName)) {
         connection.disconnect();
 return true;
     } catch (IOException e) {
+JOptionPane.showMessageDialog(null, "", e.getMessage(), 1);    
 return false;
     }
 }//fn
@@ -1335,16 +1337,16 @@ System.exit(0);
 //if settings.ini exists
 checkSettingsFile();
 
-//создаем меню
+//creating menu
 createMenu();
 
-//делаем корни невидимыми
+//making roots invisible
 tree1.setRootVisible(false);
 tree2.setRootVisible(false);
 
-//события и обработчики
+//events and handlers
 
-//сортировка по масти
+//sorting by suit
 bySuit.addItemListener(new ItemListener() {
 @Override
 public void itemStateChanged(ItemEvent e) {
@@ -1363,7 +1365,7 @@ sorting();
 }
 });
 
-//по достоинству
+//by value
 byValue.addItemListener(new ItemListener() {
 @Override
 public void itemStateChanged(ItemEvent e) {
@@ -1382,7 +1384,7 @@ sorting();
 }
 });
 
-//по масти и достоинству
+//by suit and value
 bySuitAndValue.addItemListener(new ItemListener() {
 @Override
 public void itemStateChanged(ItemEvent e) {
@@ -1401,7 +1403,7 @@ sorting();
 }
 });
 
-//сортировка выкл
+//sorting is off
 sorting_off.addItemListener(new ItemListener() {
 @Override
 public void itemStateChanged(ItemEvent e) {
@@ -1419,7 +1421,7 @@ sorting();
 }
 });
 
-//оригинальные звуки
+//original sounds
 
 orig.addItemListener(new ItemListener() {
 @Override
@@ -1435,7 +1437,7 @@ apps.setSoundMode(1);
 }
 });
 
-//звуки Red Storm Group
+//Red Storm Group sounds
 rsg.addItemListener(new ItemListener() {
 @Override
 public void itemStateChanged(ItemEvent e) {
@@ -1450,7 +1452,7 @@ apps.setSoundMode(2);
 }
 });
 
-//звуки выкл
+//sounds off
 sounds_off.addItemListener(new ItemListener() {
 @Override
 public void itemStateChanged(ItemEvent e) {
@@ -1465,8 +1467,7 @@ apps.setSoundMode(0);
 }
 });
 
-//обработчик нажатия пункта меню проверка обновлений при старте
-
+//autoplay game on start checking handler
 checkUpdatesOnStart.addItemListener(new ItemListener() {
 @Override
 public void itemStateChanged(ItemEvent e) {
@@ -1480,8 +1481,7 @@ apps.setCheckUpdates(false);
 }
 });
 
-//обработчик нажатия пункта полная или сокращенная колода
-
+//full or shorten pack checking handler
 fullPack.addItemListener(new ItemListener() {
 @Override
 public void itemStateChanged(ItemEvent e) {
@@ -1495,8 +1495,7 @@ apps.setFullPack(false);
 }
 });
 
-//обработчик нажатия пункта меню rightNow
-
+//right now item checking handler
 rightNow.addItemListener(new ItemListener() {
 @Override
 public void itemStateChanged(ItemEvent e) {
@@ -1510,9 +1509,9 @@ apps.setRightNow(false);
 }
 });
 
-//события
+//events
 
-//обработчик нажатия enter на дереве1
+//tree1 pressing key handler
 tree1.addKeyListener(new KeyAdapter()
 {
 @Override
@@ -1521,10 +1520,10 @@ tree1.addKeyListener(new KeyAdapter()
     if(e.getKeyCode()==KeyEvent.VK_ENTER)
     {
 
-//я хожу
+//my turn
 if(turn)
 {
-//первый ход
+//first lead
 if(cardsInGame.size()==0)
 {
 oneGo=getCardUnderCursor();
@@ -1537,12 +1536,12 @@ return;
 
 defend();
 return;
-}//первый ход
+}//first lead
 
-//второй и последующие ходы
+//second and the rest leads
 if(cardsInGame.size()>0)
 {
-//можно ли докинуть
+//can I add
 Boolean b = can1Add();
 if(b)
 {
@@ -1555,15 +1554,15 @@ if(winner())
 return;
 
 defend();
-}//я докидывал
-}//второй ход
+}//I added
+}//second lead
 }//turn
 
-//отбиваюсь
+//I defend
 if(!turn)
 {
 oneGo= getCardUnderCursor();
- //если масти совпадают и моя карта старше или у меня козырь
+//if suits are equal and my card is higher
 if(
 (oneGo.getSuit().equals(twoGo.getSuit())
 && oneGo.getRank() > twoGo.getRank())
@@ -1588,8 +1587,7 @@ attack();
 }
 });
 
-//обработчик нажатия кнопки
-
+//button pressing handler
 button.addActionListener(new ActionListener()
 {
 @Override
@@ -1665,6 +1663,19 @@ return true;
 
 if(e.getKeyCode() == KeyEvent.VK_F2 && e.getID() == KeyEvent.KEY_PRESSED )
 {
+
+               new Thread(new Runnable()
+               {
+                  public void run()
+                  {
+
+int i = 5;
+if(i==5)
+return;
+
+                                    }
+})
+.start();
 
 return true;
 }//f2
@@ -1812,7 +1823,7 @@ JOptionPane.showMessageDialog(null, "", "Отсутствует файл Updater
 return;
 }
 }catch (Exception e0){}
-
+//загружаем xml с версией приложения и хэшем
 String res = DownloadVersionFileToString("https://raw.github.com/RogenBenastra/Durak/main/updates/version.xml");
 if(res==null)
 {
@@ -1822,7 +1833,7 @@ return;
 
 int app_version_remote = Integer.parseInt(getInfoFromXML(res, "version").replace(".",""));
 int app_version_local = Integer.parseInt(getVersionFromManifest().replace(".",""));
-String hash_remote_txt = getInfoFromXML( res, "hash");
+String hash_remote = getInfoFromXML( res, "hash");
 
 if(app_version_local>=app_version_remote)
 {
@@ -1837,23 +1848,22 @@ JOptionPane.showMessageDialog(null, "", "Не удалось загрузить 
 return;
 }
 
-String hash_downloaded_file = MakeHash.getHash("_temp\\Durak.jar");
+String hash_local = MakeHash.getHash("_temp\\Durak.jar");
 
-if(!hash_remote_txt.equals(hash_downloaded_file))
+if(!hash_remote.equals(hash_local))
 {
 JOptionPane.showMessageDialog(null, "", "Хэши не совпадают. Обновление невозможно.",1);
-
+//удаляем папку _temp и файлы в ней
 File file = new File("_temp");
-Boolean b = false;
+Boolean isDeleted = false;
 int i=0;
-
-while(!b)
+while(!isDeleted)
 {
-if(i==5) break;
-b = deleteFolder(file);
+if(i==19) break;
+isDeleted = deleteFolder(file);
 i++;
 try{
-Thread.sleep(1000);
+Thread.sleep(250);
 }catch(Exception ex){}
 }
 return;
@@ -1863,9 +1873,9 @@ JOptionPane.showMessageDialog(null, "", "Приступаем к обновле�
 try{
 Desktop desktop = Desktop.getDesktop();
 desktop.open(new File("Updater.jar"));
-}catch(Exception ex)
+}catch(IOException exc)
 {
-//JOptionPane.showMessageDialog(null, "", "Отсутствует Updater.jar. Обновление невозможно.",1);
+JOptionPane.showMessageDialog(null, "", "Отсутствует Updater.jar. Обновление невозможно.",1);
 }
 
 };//runnable
