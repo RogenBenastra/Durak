@@ -841,7 +841,7 @@ return;
 
 }//fn
 
-//генерируем колоду
+//генератор колоды
 void packGenerator()
 {
 ArrayList<Card> tmp_pack = new ArrayList<Card>();
@@ -1022,6 +1022,7 @@ if(s.equals("you-win"))
 JOptionPane.showMessageDialog(null,"", "я победил!",1);
 return;
 }
+
 //если используются оригинальные звуки
 if(apps.getSoundMode()==1)
 {
@@ -1056,6 +1057,7 @@ snd.stop();
 }//if
 }//fn
 
+//проверка существования файла settings.ini
 public void checkSettingsFile()
 {
 File file=new File("settings.ini");
@@ -1180,12 +1182,12 @@ inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ALT, 0, true), MENU_ACTION_KEY);
       //JOptionPane.showMessageDialog(null, "", "Папка и подпапки удалены", 1);    
       return true;
     } else {
-      //JOptionPane.showMessageDialog(null, "", "Ошибка удаления", 1);    
+      JOptionPane.showMessageDialog(null, "", "Ошибка удаления", 1);    
       return false;
     }
-  }
+  }//fn
 
-//получение номера версии и хэша
+//получение номера версии и хэша из xml
 public String getInfoFromXML(String incomingString, String nodeName) {
     try {
         InputStream stream = new ByteArrayInputStream(incomingString.getBytes());
@@ -1211,10 +1213,10 @@ public String getInfoFromXML(String incomingString, String nodeName) {
 }//fn
 
 //загрузка version.xml в String
-public static String DownloadVersionFileToString(String url) {
+public static String DownloadVersionFileToString(String urlString) {
     try {
-        URL obj = new URL(url);
-        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        URL url = new URL(urlString);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
                 int responseCode = con.getResponseCode();
         BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
@@ -1231,7 +1233,7 @@ public static String DownloadVersionFileToString(String url) {
     }
 }//fn
 
-//получение информации о номере версии из jar
+//получение информации о номере версии из манифеста
 public static String getVersionFromManifest() {
         try {
             Manifest manifest = new Manifest(Durak.class.getResourceAsStream("/META-INF/MANIFEST.MF"));
@@ -1242,7 +1244,8 @@ public static String getVersionFromManifest() {
                    }
     }//fn
 
-//получение информации из xml
+/*
+//**получение информации из xml файла
 public String getInfoFromXML(String nodeName)
 {
 try{
@@ -1267,6 +1270,7 @@ File file = new File("updates\\version.xml");
 }catch(Exception x){return x.getMessage();}
 return null;
 }//fn
+*/
 
 //загружаем файл
 public static Boolean downloadFile(String url) {
@@ -1669,9 +1673,11 @@ if(e.getKeyCode() == KeyEvent.VK_F2 && e.getID() == KeyEvent.KEY_PRESSED )
                   public void run()
                   {
 
-int i = 5;
-if(i==5)
-return;
+String raw = DownloadVersionFileToString("https://raw.github.com/RogenBenastra/Durak/main/updates/version.xml");
+String res1 = getInfoFromXML(raw,"version");
+JOptionPane.showMessageDialog(null, "", res1,1);
+String res2 = getInfoFromXML(raw,"hash");
+JOptionPane.showMessageDialog(null, "", res2,1);
 
                                     }
 })
