@@ -1668,16 +1668,13 @@ return true;
 if(e.getKeyCode() == KeyEvent.VK_F2 && e.getID() == KeyEvent.KEY_PRESSED )
 {
 
+
                new Thread(new Runnable()
                {
                   public void run()
                   {
 
-String raw = DownloadVersionFileToString("https://raw.github.com/RogenBenastra/Durak/main/updates/version.xml");
-String res1 = getInfoFromXML(raw,"version");
-JOptionPane.showMessageDialog(null, "", res1,1);
-String res2 = getInfoFromXML(raw,"hash");
-JOptionPane.showMessageDialog(null, "", res2,1);
+MyClass.JFWSayString("Не приносите в школу просим Плутоний 238", true);
 
                                     }
 })
